@@ -11,6 +11,6 @@
     "request": "^2.88.2"
   },
   "scripts": {
-    "start": "node api/index.js"
+    "start": "node app.js"
   }
 }

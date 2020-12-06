@@ -1,16 +1,15 @@
-const app = require('express')();
+const express = require('express');
 const request = require('request');
 const cors = require('cors');
-
+const app = express();
 const root = 'https://fantasy.premierleague.com';
 
 app.use(cors())
-
 app.options('*', cors()) // Enable pre-flight across-the-board
 
 /**
  * Handle request to the API endpoint
- * Caching from: https://vercel.com/docs/edge-network/caching 
+ * Caching from: https://vercel.com/docs/edge-network/caching
  */
 app.use('/api', (req, res) => {
   req.pipe(request(`${root}/api${req.url}`)).on('response', (res) => {
@@ -29,5 +28,12 @@ app.use('/dist', (req, res) => {
  * Serve static images
  */
 app.use('/static', express.static('public'));
+
+app.all('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'route not defined',
+  });
+})
 
 module.exports = app;
