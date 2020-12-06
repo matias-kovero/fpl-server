@@ -1,0 +1,15 @@
+{
+  "name": "fpl-server",
+  "routes": [
+    {
+      "src": "/public/(.*)",
+      "headers": { "cache-control": "s-maxage=604800" },
+      "dest": "/public/$1"
+    },
+    { "src": "/(.*)", "dest": "index.js" }
+  ],
+  "regions": ["bru"],
+  "github": {
+    "silent": true
+  }
+}
