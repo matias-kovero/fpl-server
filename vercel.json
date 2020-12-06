@@ -2,11 +2,11 @@
   "name": "fpl-server",
   "builds": [
     { "src": "public/**", "use": "@now/static" },
-    { "src": "app.js", "use": "@now/node-server" }
+    { "src": "app.js", "use": "@now/node" }
   ],
   "routes": [ 
     { "src": "/public/(.*)", "dest": "/public/$1"},
-    { "src": "/", "dest": "app.js" }
+    { "src": "/(.*)", "dest": "app.js" }
   ],
   "regions": ["bru"],
   "github": {
