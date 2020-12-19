@@ -3,6 +3,7 @@ const request = require('request');
 const cors = require('cors');
 const app = express();
 const root = 'https://fantasy.premierleague.com';
+const resources = 'https://resources.premierleague.com/premierleague';
 
 app.use(cors())
 app.options('*', cors()) // Enable pre-flight across-the-board
@@ -25,15 +26,25 @@ app.use('/dist', (req, res) => {
 });
 
 /**
- * Serve static images
+ * Handle request to the photos endpoint.
+ */
+app.use('/photos', (req, res) => {
+  req.pipe(request(`${resources}/photos${req.url}`)).pipe(res);
+});
+
+/**
+ * Serve static images.
  */
 app.use('/static', express.static('public'));
 
+/**
+ * Handle all other routes.
+ */
 app.all('*', (req, res) => {
   res.status(404).json({
     success: false,
     message: 'route not defined',
   });
-})
+});
 
 module.exports = app;
