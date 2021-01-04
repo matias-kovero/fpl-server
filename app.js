@@ -4,6 +4,7 @@ const cors = require('cors');
 const app = express();
 const root = 'https://fantasy.premierleague.com';
 const resources = 'https://resources.premierleague.com/premierleague';
+const search = 'https://www.premierfantasytools.com/search.php';
 
 app.use(cors())
 app.options('*', cors()) // Enable pre-flight across-the-board
@@ -30,6 +31,22 @@ app.use('/dist', (req, res) => {
  */
 app.use('/photos', (req, res) => {
   req.pipe(request(`${resources}/photos${req.url}`)).pipe(res);
+});
+
+/**
+ * Send queries to external page to find team with
+ * Team ID, Team Name or Team Owner
+ */
+app.use('/search/:query', (req, res) => {
+  let query = req.params.query;
+  if (query && query.length >= 3) {
+    req.pipe(request(`${search}?query=${query}`)).pipe(res);
+  } else {
+    res.status(400).json({
+      success: false,
+      message: 'Invalid query'
+    });
+  };
 });
 
 /**
